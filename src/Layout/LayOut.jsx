@@ -7,10 +7,11 @@ import {
     PicCenterOutlined,
     LineChartOutlined,
     DatabaseOutlined,
-    UserOutlined, SettingOutlined, LogoutOutlined
+    UserOutlined, SettingOutlined, LogoutOutlined,
+    UnorderedListOutlined
 } from '@ant-design/icons';
 import {Layout, Menu, Button, theme, Dropdown, Space} from 'antd';
-import {Outlet} from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 const { Header, Sider, Content } = Layout;
 function LayOut(props) {
     const [collapsed, setCollapsed] = useState(false);
@@ -61,9 +62,14 @@ function LayOut(props) {
                             label: 'Quote',
                         },
                         {
-                            key: '2',
+                            key: 'products',
                             icon: <PicCenterOutlined />,
-                            label: 'Products',
+                            label: <Link to={"/products"}>Products</Link>,
+                        },
+                        {
+                        key: 'categories',
+                        icon: <UnorderedListOutlined />,
+                        label: <Link to={"/products-categories"}>Product categories</Link>,
                         },
                         {
                             key: '3',

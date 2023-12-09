@@ -6,6 +6,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import LayOut from "./Layout/LayOut.jsx";
 import Login from "./pages/Login.jsx";
 import Products from "./pages/Products.jsx";
+import ProductCategories from "./pages/Products.jsx";
 
 function App() {
 
@@ -17,6 +18,10 @@ function App() {
                 {
                     path: "/products",
                     element: <Products />
+                },
+                {
+                    path: "/products-categories",
+                    element: <ProductCategories />
                 }
             ]
         },

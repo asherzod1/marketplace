@@ -7,3 +7,11 @@ export const getAllProducts  = () => {
     };
     return HttpRequestHub(config);
 };
+
+export const getAllProductCategories  = () => {
+    const config = {
+        method: "GET",
+        url: `product-categories`,
+    };
+    return HttpRequestHub(config);
+};

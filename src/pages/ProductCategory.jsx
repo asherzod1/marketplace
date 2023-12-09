@@ -3,7 +3,7 @@ import {Avatar, Card, Col, Row} from 'antd';
 const { Meta } = Card;
 import { Divider, Radio, Table } from 'antd';
 import {useEffect, useState} from "react";
-import {getAllProducts} from "../server/config/products.js";
+import {getAllProductCategories, getAllProducts} from "../server/config/products.js";
 
 const columns = [
     {
@@ -12,16 +12,12 @@ const columns = [
         render: (text) => <a>{text}</a>,
     },
     {
-        title: 'Country',
-        dataIndex: 'country',
-    },
-    {
         title: 'CreatedBy',
         dataIndex: 'createdBy',
     },
 ];
 
-function ProductCategories(props) {
+function Products(props) {
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -36,7 +32,7 @@ function ProductCategories(props) {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        getAllProducts().then((res) => {
+        getAllProductCategories().then((res) => {
             console.log(res)
             setProducts(res.data);
         })
@@ -159,4 +155,4 @@ function ProductCategories(props) {
     );
 }
 
-export default ProductCategories;
+export default Products;
