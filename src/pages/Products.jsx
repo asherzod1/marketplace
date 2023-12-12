@@ -1,5 +1,5 @@
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import {Avatar, Card, Col, Row} from 'antd';
+import {Avatar, Button, Card, Col, Form, Input, Modal, Row} from 'antd';
 const { Meta } = Card;
 import { Divider, Radio, Table } from 'antd';
 import {useEffect, useState} from "react";
@@ -15,16 +15,13 @@ const columns = [
         title: 'Country',
         dataIndex: 'country',
     },
-    {
-        title: 'CreatedBy',
-        dataIndex: 'createdBy',
-    },
 ];
 
 function ProductCategories(props) {
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            setSelectedRows(selectedRows)
         },
         getCheckboxProps: (record) => ({
             disabled: record.name === 'Disabled User',
@@ -34,6 +31,7 @@ function ProductCategories(props) {
     };
 
     const [products, setProducts] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
 
     useEffect(() => {
         getAllProducts().then((res) => {
@@ -42,15 +40,48 @@ function ProductCategories(props) {
         })
     }, []);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    }
+
+    const createQuote = () => {
+        console.log("createQuote", selectedRows)
+        setIsModalOpen(true)
+    }
+
+    // Form
+    const [form] = Form.useForm();
+    const [formLayout, setFormLayout] = useState('horizontal');
+    const onFormLayoutChange = ({ layout }) => {
+        setFormLayout(layout);
+    };
+    const formItemLayout = {
+        labelCol: {
+            span: 24,
+        },
+        wrapperCol: {
+            span: 24,
+        },
+    };
+
+    // End Form
+
     return (
         <div>
             <div className="products">
+                <div className="flex mb-3 w-full justify-between">
+                    <h2>Products</h2>
+                    <Button type="primary" className="mr-2" onClick={()=>createQuote()}>Create quote</Button>
+                </div>
                 <div>
                     <Table
                         rowSelection={{
                             type: "checkbox",
                             ...rowSelection,
                         }}
+                        selectedRows={selectedRows}
                         rowKey={(record) => record.id}
                         columns={columns}
                         dataSource={products}
@@ -155,6 +186,35 @@ function ProductCategories(props) {
                 {/*    </Col>*/}
                 {/*</Row>*/}
             </div>
+            <Modal
+                title="Create quote"
+                open={isModalOpen}
+                onCancel={handleCancel}
+                footer={""}
+            >
+                <Form
+                    {...formItemLayout}
+                    layout={formLayout}
+                    form={form}
+                    initialValues={{
+                        layout: formLayout,
+                    }}
+                    onValuesChange={onFormLayoutChange}
+                    style={{
+                        maxWidth: formLayout === 'inline' ? 'none' : 600,
+                    }}
+                >
+                    <Form.Item label="Name">
+                        <Input placeholder="Please name" />
+                    </Form.Item>
+                    <Form.Item label="Field B">
+                        <Input placeholder="input placeholder" />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary">Submit</Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     );
 }

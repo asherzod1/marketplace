@@ -6,7 +6,9 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import LayOut from "./Layout/LayOut.jsx";
 import Login from "./pages/Login.jsx";
 import Products from "./pages/Products.jsx";
-import ProductCategories from "./pages/Products.jsx";
+import ProductCategories from "./pages/ProductCategory.jsx";
+import Quote from "./pages/Quote.jsx";
+import Invoices from "./pages/Invoices.jsx";
 
 function App() {
 
@@ -22,7 +24,15 @@ function App() {
                 {
                     path: "/products-categories",
                     element: <ProductCategories />
-                }
+                },
+                {
+                    path: "/quotes",
+                    element: <Quote />
+                },
+                {
+                    path: "/invoices",
+                    element: <Invoices />
+                },
             ]
         },
         {

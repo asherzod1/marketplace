@@ -41,6 +41,9 @@ function Products(props) {
     return (
         <div>
             <div className="products">
+                <div className="flex mb-3">
+                    <h2>Product categories</h2>
+                </div>
                 <div>
                     <Table
                         rowSelection={{

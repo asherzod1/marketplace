@@ -59,7 +59,7 @@ function LayOut(props) {
                         {
                             key: '6',
                             icon: <DatabaseOutlined />,
-                            label: 'Quote',
+                            label: <Link to={"/quotes"}>Quotes</Link>,
                         },
                         {
                             key: 'products',
@@ -74,7 +74,7 @@ function LayOut(props) {
                         {
                             key: '3',
                             icon: <FileDoneOutlined />,
-                            label: 'Orders',
+                            label: <Link to={"/invoices"}>Invoices</Link>,
                         },
                     ]}
                 />

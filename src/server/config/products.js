@@ -15,3 +15,19 @@ export const getAllProductCategories  = () => {
     };
     return HttpRequestHub(config);
 };
+
+export const getAllQuotes  = () => {
+    const config = {
+        method: "GET",
+        url: `quotes`,
+    };
+    return HttpRequestHub(config);
+};
+
+export const getAllInvoices  = () => {
+    const config = {
+        method: "GET",
+        url: `invoices`,
+    };
+    return HttpRequestHub(config);
+};
