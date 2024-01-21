@@ -4,13 +4,25 @@ import {getAllInvoices, getAllProducts, getAllQuotes} from "../server/config/pro
 
 const columns = [
     {
-        title: 'Name',
-        dataIndex: 'name',
+        title: 'Invoice Id',
+        dataIndex: 'id',
+    },
+    {
+        title: 'Distributor name',
+        dataIndex: ['distributor', 'firstName'],
         render: (text) => <a>{text}</a>,
     },
     {
-        title: 'Country',
-        dataIndex: 'country',
+        title: 'Supplier name',
+        dataIndex: ['supplier', 'firstName'],
+    },
+    {
+        title: 'Payment method',
+        dataIndex: 'paymentMethod',
+    },
+    {
+        title: 'Status',
+        dataIndex: 'status',
     },
 ];
 

@@ -1,8 +1,27 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import {Button, Checkbox, Form, Input, message} from 'antd';
+import axios from "axios";
+import {TOKEN_ACCESS} from "../server/constants.js";
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 
 function Login(props) {
+    const [postLoading, setPostLoading] = useState(false);
+    let navigate = useNavigate();
     const onFinish = (values) => {
+        setPostLoading(true)
+        axios.post("http://54.172.210.240:8080/api/authenticate", values).then((res) => {
+            console.log(res)
+            localStorage.setItem(TOKEN_ACCESS, res.data.id_token)
+            message.success("Login success")
+            navigate("/dashboard")
+        })
+            .catch(()=>{
+                message.error("Username or password is incorrect")
+            })
+            .finally(()=>{
+                setPostLoading(false)
+            })
         console.log('Received values of form: ', values);
     };
     return (
@@ -54,7 +73,7 @@ function Login(props) {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" className="login-form-button w-full">
+                        <Button loading={postLoading} type="primary" htmlType="submit" className="login-form-button w-full">
                             Log in
                         </Button>
                         Or <a href="">register now!</a>

@@ -1,12 +1,14 @@
 import {HttpRequestHub} from "../HttpRequestHub.js";
 
-export const getAllProducts  = () => {
+export const getAllProducts  = (obj) => {
+    const query = new URLSearchParams(obj).toString();
     const config = {
         method: "GET",
-        url: `products`,
+        url: `products?${query}`,
     };
     return HttpRequestHub(config);
 };
+
 
 export const getAllProductCategories  = () => {
     const config = {

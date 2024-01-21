@@ -1,16 +1,25 @@
-import {Table} from "antd";
+import {Button, Table} from "antd";
 import {useEffect, useState} from "react";
 import {getAllProducts, getAllQuotes} from "../server/config/products.js";
+import {Link} from "react-router-dom";
 
 const columns = [
     {
         title: 'Name',
         dataIndex: 'name',
-        render: (text) => <a>{text}</a>,
+        render: (text, row) => <Link to={"/quote-detail/" + row?.id}>{text}</Link>,
     },
     {
-        title: 'Country',
-        dataIndex: 'country',
+        title: 'Created by',
+        dataIndex: 'createdBy',
+    },
+    {
+        title: 'Payment method',
+        dataIndex: 'paymentMethod',
+    },
+    {
+        title: 'Supplier',
+        dataIndex: ['supplier', 'name'],
     },
 ];
 
@@ -38,6 +47,9 @@ function Quote(props) {
 
     return (
         <div>
+            <div className={"flex justify-end mb-3"}>
+                <Button type={"primary"}><Link to={"/quote-detail"}>Create quote</Link></Button>
+            </div>
             <div>
                 <Table
                     rowSelection={{
@@ -47,6 +59,7 @@ function Quote(props) {
                     rowKey={(record) => record.id}
                     columns={columns}
                     dataSource={products}
+                    scroll={{x: 1000}}
                 />
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -8,16 +8,19 @@ import {
     LineChartOutlined,
     DatabaseOutlined,
     UserOutlined, SettingOutlined, LogoutOutlined,
-    UnorderedListOutlined
+    UnorderedListOutlined, ShoppingCartOutlined
 } from '@ant-design/icons';
-import {Layout, Menu, Button, theme, Dropdown, Space} from 'antd';
-import {Link, Outlet} from "react-router-dom";
+import {Layout, Menu, Button, theme, Dropdown, Space, Badge} from 'antd';
+import {Link, Outlet, useOutletContext} from "react-router-dom";
+import basket from "../pages/Basket.jsx";
 const { Header, Sider, Content } = Layout;
 function LayOut(props) {
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
+    const [user, role] = useOutletContext()
 
     const items = [
         {
@@ -49,18 +52,19 @@ function LayOut(props) {
                         {
                             key: '1',
                             icon: <DashboardOutlined />,
-                            label: 'Dashboard',
+                            label: <Link to={"/dashboard"}>Dashboard</Link>,
                         },
                         {
                             key: '5',
                             icon: <LineChartOutlined />,
                             label: 'Reporting',
                         },
+                        role !== "distributor" ?
                         {
                             key: '6',
                             icon: <DatabaseOutlined />,
                             label: <Link to={"/quotes"}>Quotes</Link>,
-                        },
+                        } : null,
                         {
                             key: 'products',
                             icon: <PicCenterOutlined />,
@@ -97,18 +101,28 @@ function LayOut(props) {
                                 height: 64,
                             }}
                         />
-                        <Dropdown
-                            menu={{
-                                items,
-                            }}
-                            trigger={['click']}
-                        >
-                            <a onClick={(e) => e.preventDefault()}>
-                                <UserOutlined
-                                    style={{fontSize:"20px", color:"black"}}
-                                />
-                            </a>
-                        </Dropdown>
+
+                        <div className={"flex items-center gap-4"}>
+                            {
+                                role !== "supplier" ?
+                                    <Badge count={props.basketCount?.length}>
+                                        <Link to={"/basket"}><Button type={"dashed"}><ShoppingCartOutlined /></Button></Link>
+                                    </Badge>
+                                    : null
+                            }
+                            <Dropdown
+                                menu={{
+                                    items,
+                                }}
+                                trigger={['click']}
+                            >
+                                <a onClick={(e) => e.preventDefault()}>
+                                    <UserOutlined
+                                        style={{fontSize:"20px", color:"black"}}
+                                    />
+                                </a>
+                            </Dropdown>
+                        </div>
                     </div>
                 </Header>
                 <Content
@@ -119,7 +133,7 @@ function LayOut(props) {
                         background: colorBgContainer,
                     }}
                 >
-                    <Outlet />
+                    <Outlet context={[user, role]}/>
                 </Content>
             </Layout>
         </Layout>

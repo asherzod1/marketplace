@@ -9,29 +9,57 @@ import Products from "./pages/Products.jsx";
 import ProductCategories from "./pages/ProductCategory.jsx";
 import Quote from "./pages/Quote.jsx";
 import Invoices from "./pages/Invoices.jsx";
+import QuoteDetail from "./pages/QuoteDetail.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Basket from "./pages/Basket.jsx";
+import PrivateRouter from "./Layout/PrivateRouter.jsx";
 
 function App() {
+
+    const [basketCount, setBasketCount] = useState([])
 
     const router = createBrowserRouter([
         {
             path: "",
-            element: <LayOut/>,
+            element: <PrivateRouter />,
             children: [
                 {
-                    path: "/products",
-                    element: <Products />
-                },
-                {
-                    path: "/products-categories",
-                    element: <ProductCategories />
-                },
-                {
-                    path: "/quotes",
-                    element: <Quote />
-                },
-                {
-                    path: "/invoices",
-                    element: <Invoices />
+                    path: "",
+                    element: <LayOut basketCount={basketCount}/>,
+                    children: [
+                        {
+                            path: "/dashboard",
+                            element: <Dashboard basketCount={basketCount} setBaskcetCount={setBasketCount} />
+                        },
+                        {
+                            path: "/products",
+                            element: <Products />
+                        },
+                        {
+                            path: "/products-categories",
+                            element: <ProductCategories />
+                        },
+                        {
+                            path: "/quotes",
+                            element: <Quote />
+                        },
+                        {
+                            path: "/invoices",
+                            element: <Invoices />
+                        },
+                        {
+                            path: "/quote-detail",
+                            element: <QuoteDetail />
+                        },
+                        {
+                            path: "/quote-detail/:id",
+                            element: <QuoteDetail />
+                        },
+                        {
+                            path: "/basket",
+                            element: <Basket basketCount={basketCount} setBaskcetCount={setBasketCount} />
+                        },
+                    ]
                 },
             ]
         },

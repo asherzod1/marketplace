@@ -85,6 +85,7 @@ function ProductCategories(props) {
                         rowKey={(record) => record.id}
                         columns={columns}
                         dataSource={products}
+                        scroll={{x: 1000}}
                     />
                 </div>
                 {/*<Row gutter={[16, 16]}>*/}
