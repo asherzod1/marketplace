@@ -6,7 +6,7 @@ export const HttpRequestHub = (config = null) => {
     const token = localStorage.getItem(TOKEN_ACCESS);
     let headers = {
         // "X-Requested-With": "XMLHttpRequest",
-        "Content-Security-Policy": "upgrade-insecure-requests",
+        // "Content-Security-Policy": "upgrade-insecure-requests",
         "Content-Type": "application/json; charset=utf-8",
         Authorization: token ? `Bearer ${token}` : "",
         // "Accept-Language": 'eng',

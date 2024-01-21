@@ -11,9 +11,9 @@ function Login(props) {
     const onFinish = (values) => {
         setPostLoading(true)
         axios.post("http://54.172.210.240:8080/api/authenticate", values, {
-            headers: {
-                "Content-Security-Policy": "upgrade-insecure-requests",
-            }
+            // headers: {
+            //     "Content-Security-Policy": "upgrade-insecure-requests",
+            // }
         }).then((res) => {
             console.log(res)
             localStorage.setItem(TOKEN_ACCESS, res.data.id_token)
