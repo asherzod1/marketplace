@@ -10,7 +10,7 @@ function Login(props) {
     let navigate = useNavigate();
     const onFinish = (values) => {
         setPostLoading(true)
-        axios.post(API_URL, values).then((res) => {
+        axios.post(`${API_URL}authenticate`, values).then((res) => {
             console.log(res)
             localStorage.setItem(TOKEN_ACCESS, res.data.id_token)
             message.success("Login success")
