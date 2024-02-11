@@ -1,8 +1,8 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import {Button, Checkbox, Form, Input, message} from 'antd';
 import axios from "axios";
-import {API_URL, TOKEN_ACCESS} from "../server/constants.js";
-import {useNavigate} from "react-router-dom";
+import {API_URL, TOKEN_ACCESS, USER_INFO} from "../server/constants.js";
+import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 
 function Login(props) {
@@ -13,6 +13,7 @@ function Login(props) {
         axios.post(`${API_URL}authenticate`, values).then((res) => {
             console.log(res)
             localStorage.setItem(TOKEN_ACCESS, res.data.id_token)
+            localStorage.setItem(USER_INFO, JSON.stringify(res.data.user))
             message.success("Login success")
             navigate("/dashboard")
         })
@@ -76,7 +77,7 @@ function Login(props) {
                         <Button loading={postLoading} type="primary" htmlType="submit" className="login-form-button w-full">
                             Log in
                         </Button>
-                        Or <a href="">register now!</a>
+                        Or <Link to={"/register"} href="">register now!</Link>
                     </Form.Item>
                 </Form>
             </div>

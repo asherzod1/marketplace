@@ -123,7 +123,7 @@ function Basket(props) {
 
     return (
         <div className={"w-full"}>
-            <h2 className={"mb-3"}>Basket</h2>
+            <h2 className={"mb-3"}>Purchase order: </h2>
             <h3 className={"mb-2 font-normal"}>Payment method: </h3>
             <Select value={paymentMethod} onSelect={e=>setPaymentMethod(e)} className={"w-full mb-3"}>
                 <Select.Option value={"CASH"}>Cash</Select.Option>

@@ -7,7 +7,6 @@ import {Spin} from "antd";
 function PrivateRouter(props) {
     const token = localStorage.getItem(TOKEN_ACCESS);
     let navigate = useNavigate();
-    console.log("RRRRRRRRRR ", token)
     const [user, setUser] = React.useState(null);
     const [role, setRole] = React.useState(null);
     const [loading, setLoading] = React.useState(true);

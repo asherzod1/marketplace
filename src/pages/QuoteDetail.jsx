@@ -114,7 +114,7 @@ function QuoteDetail(props) {
         console.log("DATA: ", data)
         postQuoteApi(data).then((res) => {
             message.success("Quote created successfully");
-            navigate("/quote-detail/" + res?.data?.id)
+            navigate("/quotes")
         })
             .catch((err) => {
                 message.error("Quote created failed");
@@ -135,22 +135,22 @@ function QuoteDetail(props) {
         {
             title: 'Quantity',
             dataIndex: 'quantity',
-            render: (text, row) => <InputNumber disabled={id} onChange={(e) => itemChange(e, row, "quantity")} value={text}/>,
+            render: (text, row) => <InputNumber type={"number"} disabled={id} onChange={(e) => itemChange(e, row, "quantity")} value={text}/>,
         },
         {
             title: 'Price',
             dataIndex: 'price',
-            render: (text, row) => <InputNumber disabled={id} onChange={(e) => itemChange(e, row, "price")} value={text}/>,
+            render: (text, row) => <InputNumber type={"number"} disabled={id} onChange={(e) => itemChange(e, row, "price")} value={text}/>,
         },
         {
             title: 'Discount, %',
             dataIndex: 'discount',
-            render: (text, row) => <InputNumber disabled={id} onChange={(e) => itemChange(e, row, "discount")} value={text}/>,
+            render: (text, row) => <InputNumber type={"number"} disabled={id} onChange={(e) => itemChange(e, row, "discount")} value={text}/>,
         },
         {
             title: 'Tax, %',
             dataIndex: 'tax',
-            render: (text, row) => <InputNumber disabled={id} onChange={(e) => itemChange(e, row, "tax")} value={text}/>,
+            render: (text, row) => <InputNumber type={"number"} disabled={id} onChange={(e) => itemChange(e, row, "tax")} value={text}/>,
         },
         {
             title: 'Total price',
@@ -211,7 +211,7 @@ function QuoteDetail(props) {
                 >
 
                 </Table>
-                <div className={"mt-4 flex justify-end text-[#00A000] gap-4"}>
+                <div className={"mt-4 flex justify-end text-[#888] gap-4"}>
                     <h2 className={""}>
                         Total: {products.reduce((acc, item) => acc + item.total, 0)}
                     </h2>

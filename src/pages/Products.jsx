@@ -1,23 +1,35 @@
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import {Avatar, Button, Card, Col, Form, Input, Modal, Row} from 'antd';
-const { Meta } = Card;
 import { Divider, Radio, Table } from 'antd';
 import {useEffect, useState} from "react";
 import {getAllProducts} from "../server/config/products.js";
 
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        render: (text) => <a>{text}</a>,
-    },
-    {
-        title: 'Country',
-        dataIndex: 'country',
-    },
-];
+const { Meta } = Card;
+
+
 
 function ProductCategories(props) {
+    const columns = [
+        {
+            title: "Number",
+            dataIndex: "number"
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: 'Country',
+            dataIndex: 'country',
+        },
+        {
+            title: "action",
+            dataIndex: 'id',
+            render: (id) => <Button onClick={()=>openInfo(id)} type={"link"}><InfoCircleOutlined /></Button>,
+            width: "50px"
+        }
+    ];
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -29,7 +41,7 @@ function ProductCategories(props) {
             name: record.name,
         }),
     };
-
+    const [loading, setLoading] = useState(true)
     const [products, setProducts] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
 
@@ -37,6 +49,7 @@ function ProductCategories(props) {
         getAllProducts().then((res) => {
             console.log(res)
             setProducts(res.data);
+            setLoading(false)
         })
     }, []);
 
@@ -46,7 +59,10 @@ function ProductCategories(props) {
         setIsModalOpen(false);
     }
 
-    const createQuote = () => {
+    const [infoDetail, setInfoDetail] = useState({})
+    const openInfo = (id) => {
+        let found = products.find(item=>item.id === id)
+        setInfoDetail(found)
         console.log("createQuote", selectedRows)
         setIsModalOpen(true)
     }
@@ -73,10 +89,10 @@ function ProductCategories(props) {
             <div className="products">
                 <div className="flex mb-3 w-full justify-between">
                     <h2>Products</h2>
-                    <Button type="primary" className="mr-2" onClick={()=>createQuote()}>Create quote</Button>
                 </div>
                 <div>
                     <Table
+                        loading={loading}
                         rowSelection={{
                             type: "checkbox",
                             ...rowSelection,
@@ -188,33 +204,12 @@ function ProductCategories(props) {
                 {/*</Row>*/}
             </div>
             <Modal
-                title="Create quote"
+                title={`Product name: ${infoDetail?.name}`}
                 open={isModalOpen}
                 onCancel={handleCancel}
                 footer={""}
             >
-                <Form
-                    {...formItemLayout}
-                    layout={formLayout}
-                    form={form}
-                    initialValues={{
-                        layout: formLayout,
-                    }}
-                    onValuesChange={onFormLayoutChange}
-                    style={{
-                        maxWidth: formLayout === 'inline' ? 'none' : 600,
-                    }}
-                >
-                    <Form.Item label="Name">
-                        <Input placeholder="Please name" />
-                    </Form.Item>
-                    <Form.Item label="Field B">
-                        <Input placeholder="input placeholder" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="primary">Submit</Button>
-                    </Form.Item>
-                </Form>
+                Description: {infoDetail?.description}
             </Modal>
         </div>
     );

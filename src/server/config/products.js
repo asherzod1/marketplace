@@ -33,3 +33,11 @@ export const getAllInvoices  = () => {
     };
     return HttpRequestHub(config);
 };
+
+export const getInvoiceById  = (id) => {
+    const config = {
+        method: "GET",
+        url: `invoices/${id}`,
+    };
+    return HttpRequestHub(config);
+};

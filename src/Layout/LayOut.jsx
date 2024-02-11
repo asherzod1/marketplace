@@ -8,11 +8,12 @@ import {
     LineChartOutlined,
     DatabaseOutlined,
     UserOutlined, SettingOutlined, LogoutOutlined,
-    UnorderedListOutlined, ShoppingCartOutlined
+    UnorderedListOutlined, ShoppingCartOutlined, AppleOutlined
 } from '@ant-design/icons';
 import {Layout, Menu, Button, theme, Dropdown, Space, Badge} from 'antd';
-import {Link, Outlet, useOutletContext} from "react-router-dom";
+import {Link, Outlet, useNavigate, useOutletContext} from "react-router-dom";
 import basket from "../pages/Basket.jsx";
+import {TOKEN_ACCESS} from "../server/constants.js";
 const { Header, Sider, Content } = Layout;
 function LayOut(props) {
     const [collapsed, setCollapsed] = useState(false);
@@ -21,6 +22,11 @@ function LayOut(props) {
     } = theme.useToken();
 
     const [user, role] = useOutletContext()
+    let navigate = useNavigate()
+    const logOut = () =>{
+        localStorage.clear()
+        navigate("/login")
+    }
 
     const items = [
         {
@@ -35,7 +41,7 @@ function LayOut(props) {
             type: 'divider',
         },
         {
-            label: <div><LogoutOutlined /> Log out</div>,
+            label: <div onClick={()=>logOut()}><LogoutOutlined /> Log out</div>,
             key: '3',
         },
     ];
@@ -43,7 +49,20 @@ function LayOut(props) {
     return (
         <Layout style={{minHeight:"100vh"}}>
             <Sider trigger={null} collapsible collapsed={collapsed}>
-                <div className="demo-logo-vertical" style={{width:"100%", height:"60px"}}/>
+                <div className={"flex px-3 items-center gap-3 my-4"}>
+                    <div className={"w-[30px] h-[30px] bg-[#ddd] rounded-[50%] flex items-center justify-center"}>
+                        <AppleOutlined />
+                    </div>
+                    {
+                        collapsed ?
+                            ''
+                            :
+                            <div className={"text-[16px] text-white"}>
+                                {user.companyName}
+                            </div>
+                    }
+
+                </div>
                 <Menu
                     theme="dark"
                     mode="inline"

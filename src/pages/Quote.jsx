@@ -5,8 +5,8 @@ import {Link} from "react-router-dom";
 
 const columns = [
     {
-        title: 'Name',
-        dataIndex: 'name',
+        title: 'Number',
+        dataIndex: 'number',
         render: (text, row) => <Link to={"/quote-detail/" + row?.id}>{text}</Link>,
     },
     {
@@ -36,12 +36,14 @@ function Quote(props) {
         }),
     };
 
+    const [loading, setLoading] = useState(true)
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
         getAllQuotes().then((res) => {
             console.log(res)
             setProducts(res.data);
+            setLoading(false)
         })
     }, []);
 
@@ -52,6 +54,7 @@ function Quote(props) {
             </div>
             <div>
                 <Table
+                    loading={loading}
                     rowSelection={{
                         type: "checkbox",
                         ...rowSelection,
