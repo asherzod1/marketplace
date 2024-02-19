@@ -9,9 +9,9 @@ function Invoices(props) {
     const [user, role] = useOutletContext()
     const columns = [
         {
-            title: 'Invoice Id',
-            dataIndex: 'id',
-            render: (text)=> <Link to={"/invoice/"+text}>{text}</Link>
+            title: 'Invoice Number',
+            dataIndex: 'number',
+            render: (text, row)=> <Link to={"/invoice/"+row?.id}>{text}</Link>
         },
         {
             title: 'Distributor name',
@@ -38,10 +38,12 @@ function Invoices(props) {
         {
             title: "action",
             dataIndex: "id",
-            render: (id) => <div className={"flex gap-2"}>
-                <Button type={"primary"}>approve</Button>
-                <Button type={"primary"} danger>cancel</Button>
-            </div>
+            render: (id, row) => row?.status === "DRAFT" && role === "supplier" ?
+                <div className={"flex gap-2"}>
+                    <Button type={"primary"}>approve</Button>
+                    <Button type={"primary"} danger>cancel</Button>
+                </div>
+                : ''
         }
     ];
     if (role === "supplier"){

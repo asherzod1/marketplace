@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {getQouteItems} from "../server/config/quote.js";
-import {Badge, Button, Card, Drawer, Form, Input, InputNumber, List, Select, Space, Table} from "antd";
+import {Badge, Button, Card, Drawer, Form, Input, InputNumber, List, Modal, Select, Space, Spin, Table} from "antd";
 import {
     ShoppingCartOutlined,
     LeftOutlined,
     AppstoreOutlined,
     UnorderedListOutlined,
-    DeleteOutlined
+    InfoCircleOutlined
 } from "@ant-design/icons";
 import {useOutletContext} from "react-router-dom";
-import {getAllProducts} from "../server/config/products.js";
+import {getAllProducts, getManafactures} from "../server/config/products.js";
 
 
 function Dashboard(props) {
@@ -39,6 +39,7 @@ function Dashboard(props) {
             dataIndex: 'id',
             width: 100,
             render: (id, row) => <div className={"flex justify-end"}>
+                <Button onClick={()=>openModal(row)} type={"link"}><InfoCircleOutlined style={{fontSize: "16px"}} /></Button>
                 {
                     Array.isArray(props.basketCount) && props.basketCount.length > 0 && props.basketCount.find((basket) => basket?.id === row?.id) ?
                         <Button danger onClick={() => removeBasket(row.id)}
@@ -83,8 +84,17 @@ function Dashboard(props) {
             setOptions(res?.data?.map((item) => ({label: item.name, value: item.id, ...item})))
             console.log(res)
         })
+
+        getManafactures("MANUFACTURER").then((res) => {
+            setManafacturesOptions(res?.data?.map((item) => ({label: item, value: item})))
+        })
+        getManafactures("LOCATION").then((res) => {
+            setLocationsOptions(res?.data?.map((item) => ({label: item, value: item})))
+        })
     }, []);
     console.log(props.basketCount)
+    const [manafacturesOptions, setManafacturesOptions] = useState([])
+    const [locationsOptions, setLocationsOptions] = useState([])
     const addToBasket = (item) => {
         props.setBaskcetCount([...props.basketCount, item])
     }
@@ -119,13 +129,18 @@ function Dashboard(props) {
     const [form] = Form.useForm();
 
     const onFinish = (values) =>{
+        setListLoading(true)
         let data = removeUndefinedOrNull(values)
         getQouteItems(data).then((res) => {
             console.log(res)
             setQuoteItems(res.data);
         })
+            .finally(() => {
+                setListLoading(false)
+                setOpen(false)
+            })
     }
-
+    const [listLoading, setListLoading] = useState(false)
     const [selectLoading, setSelectLoading] = useState(false)
     const [options, setOptions] = useState([])
     const searchProduct = (value) => {
@@ -142,6 +157,17 @@ function Dashboard(props) {
     }
 
     const [cardType, setCardType] = useState("card")
+    const [modalOpen, setModalOpen] = useState(false)
+    const [modalData, setModalData] = useState({})
+    const openModal = (data) => {
+        setModalData(data)
+        setModalOpen(true)
+    }
+
+    const closeModal = () =>{
+        setModalData({})
+        setModalOpen(false)
+    }
 
     return (
         <div>
@@ -157,6 +183,11 @@ function Dashboard(props) {
                 <Button onClick={()=>showDrawer()} type={"primary"}><LeftOutlined /> Filter</Button>
             </div>
             {
+                listLoading ?
+                    <div className={"flex justify-center"}>
+                        <Spin/>
+                    </div>
+                    :
                 cardType === "card" ?
                     <List
                         grid={{
@@ -177,16 +208,22 @@ function Dashboard(props) {
                                         <b>Payment method:</b> {item?.quote?.paymentMethod}
                                         {
                                             role === "distributor" ?
-                                                <div className={"flex mt-3 justify-end"}>
-                                                    {
-                                                        Array.isArray(props.basketCount) && props.basketCount.length > 0 && props.basketCount.find((basket) => basket?.id === item?.id) ?
-                                                            <Button danger onClick={() => removeBasket(item.id)}
-                                                                    type={"dashed"}>Remove from <ShoppingCartOutlined/></Button>
-                                                            :
-                                                            <Button onClick={() => addToBasket(item)} type={"dashed"}>Add
-                                                                to <ShoppingCartOutlined/></Button>
-                                                    }
+                                                <div className={"flex justify-between items-end"}>
+                                                    <Button onClick={()=>openModal(item)} type={"link"}><InfoCircleOutlined style={{fontSize: "16px"}} /></Button>
+                                                    <div className={"flex mt-3 justify-end"}>
+                                                        {
+                                                            Array.isArray(props.basketCount) && props.basketCount.length > 0 && props.basketCount.find((basket) => basket?.id === item?.id) ?
+                                                                <Button danger onClick={() => removeBasket(item.id)}
+                                                                        type={"dashed"}>Remove
+                                                                    from <ShoppingCartOutlined/></Button>
+                                                                :
+                                                                <Button onClick={() => addToBasket(item)}
+                                                                        type={"dashed"}>Add
+                                                                    to <ShoppingCartOutlined/></Button>
+                                                        }
+                                                    </div>
                                                 </div>
+
                                                 : ''
                                         }
                                     </Card>
@@ -202,6 +239,34 @@ function Dashboard(props) {
                         dataSource={quoteItems}
                     />
             }
+
+            <Modal
+                title={"Quote Item info:"}
+                open={modalOpen}
+                footer={null}
+            >
+                <b>Product name:</b> {modalData.product?.name}
+                <br/>
+                <b>Quantity:</b> {modalData?.quantity}
+                <br/>
+                <b>Total:</b> {modalData?.total}
+                <br/>
+                <b>Quote name:</b> {modalData?.quote?.name}
+                <br/>
+                <b>Quote number:</b> {modalData?.quote?.number}
+                <br/>
+                <b>Discount:</b> {modalData?.discount} %
+                <br/>
+                <b>Price:</b> {modalData?.price}
+                <br/>
+                <b>Supplier:</b> {modalData?.quote?.supplier?.name}
+                <br/>
+                <b>Payment method:</b> {modalData?.quote?.paymentMethod}
+
+                <div className={"flex mt-3 justify-end"}>
+                    <Button onClick={() => closeModal()}>Close</Button>
+                </div>
+            </Modal>
 
             <Drawer
                 title="Filter"
@@ -224,14 +289,18 @@ function Dashboard(props) {
                     <Form.Item name={"priceFrom"} label={"Price from"}>
                         <InputNumber defaultValue={0} className={"w-full"} type={"number"}></InputNumber>
                     </Form.Item>
-                    <Form.Item name={"priceTo"} label={"Price from"}>
+                    <Form.Item name={"priceTo"} label={"Price To"}>
                         <InputNumber defaultValue={0} className={"w-full"} type={"number"}></InputNumber>
                     </Form.Item>
                     <Form.Item name={"manafacturer"} label={"Manafacturer"}>
-                        <Input placeholder={"Ex: india "}></Input>
+                        <Select
+                            options={manafacturesOptions}
+                        />
                     </Form.Item>
                     <Form.Item name={"location"} label={"Location"}>
-                        <Input placeholder={"location "}></Input>
+                        <Select
+                            options={locationsOptions}
+                        />
                     </Form.Item>
                     <Form.Item name={"supplierIds"} label={"Suppliers"}>
                         <Select options={suppliers} mode={"multiple"} showSearch />

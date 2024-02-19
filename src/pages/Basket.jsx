@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Form, Input, InputNumber, message, Select, Table} from "antd";
 import {DeleteOutlined} from "@ant-design/icons";
 import {postInvoiceApi} from "../server/config/invoice.js";
-import {useOutletContext} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 
 function Basket(props) {
 
@@ -118,8 +118,13 @@ function Basket(props) {
         }).catch(()=>{
             message.error("Error")
         })
+            .finally(()=>{
+                navigate("/invoices")
+            })
         console.log(mappedArray)
     }
+
+    let navigate = useNavigate()
 
     return (
         <div className={"w-full"}>

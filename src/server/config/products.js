@@ -41,3 +41,11 @@ export const getInvoiceById  = (id) => {
     };
     return HttpRequestHub(config);
 };
+
+export const getManafactures  = (type) => {
+    const config = {
+        method: "GET",
+        url: `look-up-items/${type}`,
+    };
+    return HttpRequestHub(config);
+};

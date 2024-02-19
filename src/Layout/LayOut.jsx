@@ -25,7 +25,8 @@ function LayOut(props) {
     let navigate = useNavigate()
     const logOut = () =>{
         localStorage.clear()
-        navigate("/login")
+        
+         navigate("/login")
     }
 
     const items = [

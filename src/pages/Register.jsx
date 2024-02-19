@@ -58,17 +58,6 @@ function Register(props) {
                         <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Last name"/>
                     </Form.Item>
                     <Form.Item
-                        name="phoneNumber"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your first name!',
-                            },
-                        ]}
-                    >
-                        <Input prefix={<PhoneOutlined className="site-form-item-icon"/>} placeholder="Phone number: +998XXXX..."/>
-                    </Form.Item>
-                    <Form.Item
                         name="companyNmae"
                         rules={[
                             {
@@ -80,15 +69,15 @@ function Register(props) {
                         <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Company name"/>
                     </Form.Item>
                     <Form.Item
-                        name="login"
+                        name="phone"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your Username!',
+                                message: 'Please input your first name!',
                             },
                         ]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
+                        <Input prefix={<PhoneOutlined className="site-form-item-icon"/>} placeholder="Phone number: 998XXXX..."/>
                     </Form.Item>
                     <Form.Item
                         name="password"

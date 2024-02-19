@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Input, InputNumber, Select, Table} from "antd";
-import {DeleteOutlined} from "@ant-design/icons";
-import {useParams} from "react-router-dom";
+import {LeftOutlined} from "@ant-design/icons";
+import {Link, useParams} from "react-router-dom";
 import {getInvoiceById} from "../server/config/products.js";
 
 function InvoiceDetail(props) {
@@ -58,6 +58,8 @@ function InvoiceDetail(props) {
 
     return (
         <div className={"w-full"}>
+            <Button className={"mb-3"} type={"dashed"}><Link to={"/invoices"}><LeftOutlined /> Invoices</Link></Button>
+
             <h2 className={"mb-3"}>Purchase order: </h2>
             <h3 className={"mb-2 font-normal"}>Payment method: </h3>
             <Select value={paymentMethod} disabled className={"w-full mb-3"}>
