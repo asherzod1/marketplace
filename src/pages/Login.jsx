@@ -10,7 +10,7 @@ function Login(props) {
     let navigate = useNavigate();
     const onFinish = (values) => {
         setPostLoading(true)
-        axios.post(`${API_URL}authenticate`, values).then((res) => {
+        axios.post(`${API_URL}authenticate`, {...values, username: values.username?.replace("+", "")}).then((res) => {
             console.log(res)
             localStorage.setItem(TOKEN_ACCESS, res.data.id_token)
             localStorage.setItem(USER_INFO, JSON.stringify(res.data.user))
@@ -46,7 +46,7 @@ function Login(props) {
                             },
                         ]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Phone number: +998XXXXX..." />
                     </Form.Item>
                     <Form.Item
                         name="password"

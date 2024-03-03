@@ -92,6 +92,10 @@ function QuoteDetail(props) {
 
     const [user, role] = useOutletContext()
     const postQuote = (value) => {
+        if (products.length === 0) {
+            message.error("Please add items")
+            return;
+        }
         setPostLoading(true);
         // const newProducts = [...products];
         const data = {
@@ -184,13 +188,34 @@ function QuoteDetail(props) {
                 onFinish={postQuote}
                 layout={"vertical"}
             >
-                <Form.Item name={"name"} label={"Name"}>
+                <Form.Item
+                    rules={
+                        [
+                            {
+                                required: true,
+                                message: "Please input name",
+                            }
+                        ]
+                    }
+                    name={"name"}
+                    label={"Name"}
+                >
                     <Input/>
                 </Form.Item>
-                <Form.Item name={"number"} label={"Number"}>
-                    <Input/>
-                </Form.Item>
-                <Form.Item name={"paymentMethod"} label={"Payment method"}>
+                {/*<Form.Item name={"number"} label={"Number"}>*/}
+                {/*    <Input/>*/}
+                {/*</Form.Item>*/}
+                <Form.Item
+                    rules={
+                        [
+                            {
+                                required: true,
+                                message: "Please choose payment method",
+                            }
+                        ]
+                    }
+                    name={"paymentMethod"}
+                    label={"Payment method"}>
                     <Select>
                         <Select.Option value={"CASH"}>Cash</Select.Option>
                         <Select.Option value={"CARD"}>Card</Select.Option>
@@ -213,7 +238,7 @@ function QuoteDetail(props) {
                 </Table>
                 <div className={"mt-4 flex justify-end text-[#888] gap-4"}>
                     <h2 className={""}>
-                        Total: {products.reduce((acc, item) => acc + item.total, 0)}
+                        Total: {products.reduce((acc, item) => acc + item.total, 0)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     </h2>
                     <Button loading={postLoading} disabled={id} htmlType={"submit"} type={"primary"}>Create quote</Button>
                 </div>

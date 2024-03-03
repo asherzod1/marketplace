@@ -9,8 +9,12 @@ function Register(props) {
     const [postLoading, setPostLoading] = useState(false);
     let navigate = useNavigate();
     const onFinish = (values) => {
+        let postValues = {
+            ...values,
+            phone: values.phone.replace("+", "")
+        }
         setPostLoading(true)
-        axios.post(`${API_URL}register`, values).then((res) => {
+        axios.post(`${API_URL}register`, postValues).then((res) => {
             console.log(res)
             message.success("User created")
             navigate("/login")
@@ -77,7 +81,7 @@ function Register(props) {
                             },
                         ]}
                     >
-                        <Input prefix={<PhoneOutlined className="site-form-item-icon"/>} placeholder="Phone number: 998XXXX..."/>
+                        <Input prefix={<PhoneOutlined className="site-form-item-icon"/>} placeholder="Phone number: +998XXXX..."/>
                     </Form.Item>
                     <Form.Item
                         name="password"

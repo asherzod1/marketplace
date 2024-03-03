@@ -11,7 +11,7 @@ const { Meta } = Card;
 function ProductCategories(props) {
     const columns = [
         {
-            title: "Number",
+            title: "Numeration",
             dataIndex: "number"
         },
         {

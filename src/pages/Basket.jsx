@@ -119,6 +119,7 @@ function Basket(props) {
             message.error("Error")
         })
             .finally(()=>{
+                setBaskcetCount([])
                 navigate("/invoices")
             })
         console.log(mappedArray)

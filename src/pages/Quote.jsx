@@ -2,10 +2,11 @@ import {Button, Table} from "antd";
 import {useEffect, useState} from "react";
 import {getAllProducts, getAllQuotes} from "../server/config/products.js";
 import {Link} from "react-router-dom";
+import {ReloadOutlined} from "@ant-design/icons";
 
 const columns = [
     {
-        title: 'Number',
+        title: 'Numeration',
         dataIndex: 'number',
         render: (text, row) => <Link to={"/quote-detail/" + row?.id}>{text}</Link>,
     },
@@ -39,17 +40,23 @@ function Quote(props) {
     const [loading, setLoading] = useState(true)
     const [products, setProducts] = useState([]);
 
-    useEffect(() => {
+    const refreshList = () => {
+        setLoading(true)
         getAllQuotes().then((res) => {
             console.log(res)
             setProducts(res.data);
             setLoading(false)
         })
+    }
+
+    useEffect(() => {
+        refreshList()
     }, []);
 
     return (
         <div>
-            <div className={"flex justify-end mb-3"}>
+            <div className={"flex justify-end mb-3 gap-3"}>
+                <Button loading={loading} onClick={()=>refreshList()} icon={<ReloadOutlined />}>Refresh</Button>
                 <Button type={"primary"}><Link to={"/quote-detail"}>Create quote</Link></Button>
             </div>
             <div>

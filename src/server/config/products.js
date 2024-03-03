@@ -21,7 +21,7 @@ export const getAllProductCategories  = () => {
 export const getAllQuotes  = () => {
     const config = {
         method: "GET",
-        url: `quotes`,
+        url: `quotes/`,
     };
     return HttpRequestHub(config);
 };

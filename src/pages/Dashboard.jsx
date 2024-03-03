@@ -247,6 +247,8 @@ function Dashboard(props) {
             >
                 <b>Product name:</b> {modalData.product?.name}
                 <br/>
+                <b>Quote description:</b> {modalData?.description}
+                <br/>
                 <b>Quantity:</b> {modalData?.quantity}
                 <br/>
                 <b>Total:</b> {modalData?.total}
